@@ -2418,9 +2418,13 @@ static void arr_update(struct net_device *bond_dev, unsigned int avg_speed, unsi
 		if (current_speed < avg_speed)
 		{
 			slave->arr_weight -= 10;
+			bond->arr.current_slave_id = (bond->arr.current_slave_id + 1) % bond->slave_cnt;
+			bond->arr.current_mode = 0;
 		}
-		bond->arr.current_slave_id = (bond->arr.current_slave_id + 1) % bond->slave_cnt;
-		bond->arr.current_mode = 0;
+		else
+		{
+			slave->arr_weight += 10;
+		}
 	}
 
 	sum = 0;
